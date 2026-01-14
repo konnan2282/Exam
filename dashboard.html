@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - LinguaPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Навигация ЛК -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="bi bi-mortarboard-fill me-2"></i>Lingua<span class="text-white">Pro</span>
+            </a>
+            <div class="d-flex align-items-center ms-auto">
+                <a class="btn btn-outline-light btn-sm rounded-pill" href="index.html">
+                    <i class="bi bi-arrow-left me-1"></i> На главную
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Контейнер для уведомлений -->
+    <div id="alerts-container" class="container mt-3"></div>
+
+    <main class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Мои заявки</h2>
+            <a href="index.html#courses" class="btn btn-primary rounded-pill"><i class="bi bi-plus-lg"></i> Новый курс</a>
+        </div>
+
+        <!-- Таблица заказов -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" class="text-start">Название курса</th>
+                            <th scope="col">Дата старта</th>
+                            <th scope="col">Стоимость</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-tbody">
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">Загрузка данных...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Пагинация -->
+        <nav class="mt-4">
+            <ul id="orders-pagination" class="pagination justify-content-center"></ul>
+        </nav>
+    </main>
+
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title">Детали заявки</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="view-course-name" class="fw-bold"></h5>
+                    <p id="view-teacher-name" class="text-muted mb-3"></p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Дата и время:</span>
+                            <strong id="view-date"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Кол-во человек:</span>
+                            <strong id="view-persons"></strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <span class="fw-bold">Цена:</span>
+                            <strong id="view-price" class="text-primary"></strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">Изменение заявки</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-order-form">
+                        <div class="mb-3">
+                            <label class="form-label">Курс</label>
+                            <input type="text" class="form-control bg-light" id="edit-course-name" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Дата начала</label>
+                            <input type="date" class="form-control" id="edit-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Время</label>
+                            <select class="form-select" id="edit-time" required>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Кол-во человек</label>
+                            <input type="number" class="form-control" id="edit-persons" min="1" max="20" required>
+                        </div>
+                        <div class="alert alert-info small">
+                            <i class="bi bi-info-circle me-1"></i> При изменении даты или времени стоимость будет пересчитана автоматически.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary rounded-pill" id="save-edit-btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 text-center p-4">
+                <i class="bi bi-exclamation-circle text-danger display-1 mb-3"></i>
+                <h5 class="fw-bold">Удалить заявку?</h5>
+                <p class="text-muted small">Это действие нельзя будет отменить.</p>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="button" class="btn btn-danger rounded-pill" id="confirmDeleteBtn">Да, удалить</button>
+                    <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="bg-dark text-light py-4 mt-auto">
+        <div class="container text-center">
+            <p class="small text-secondary mb-0">&copy; 2024 LinguaPro. Личный кабинет.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
